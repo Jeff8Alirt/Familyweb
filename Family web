@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohtar Tube - منصة التواصل</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #0d47a1;
+            --background-color: #f8f9fa;
+            --text-color: #2d3436;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background: var(--background-color);
+            color: var(--text-color);
+        }
+
+        /* تحسينات الأداء */
+        .header, .main-content {
+            will-change: transform;
+        }
+
+        /* الهيدر المحسّن */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* تحسينات شريط البحث */
+        .search-container {
+            position: relative;
+            flex-grow: 1;
+            max-width: 600px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 0.8rem 2rem;
+            border-radius: 2rem;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus {
+            background: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: minmax(300px, 2fr) 1fr;
+            gap: 2rem;
+        }
+
+        /* نظام البوستات المحسّن */
+        .post {
+            background: white;
+            margin: 1rem 0;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden;
+        }
+
+        .post:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        /* تحسينات التفاعلات */
+        .post-actions {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .post-action {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .post-action.liked {
+            color: var(--primary-color);
+        }
+
+        /* تحميل متدرج */
+        .skeleton-loader {
+            background: #eee;
+            border-radius: 8px;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { opacity: 0.6 }
+            50% { opacity: 1 }
+            100% { opacity: 0.6 }
+        }
+
+        /* تحسينات التعليقات */
+        .comment-input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 2rem;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .comment-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-wrap: wrap;
+            }
+            
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-video"></i>
+                Mohtar Tube
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="ابحث عن فيديوهات أو مستخدمين...">
+            </div>
+            <div class="profile">
+                <i class="fas fa-user-circle" style="font-size: 2rem; color: white;"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="feed">
+            <!-- منطقة إنشاء المحتوى -->
+            <div class="post create-post">
+                <div class="post-header">
+                    <img src="https://via.placeholder.com/50" class="post-user-img" alt="صورة المستخدم">
+                    <textarea class="post-input" placeholder="شارك أفكارك أو انشر فيديو..." rows="3"></textarea>
+                </div>
+                <div class="post-actions">
+                    <button class="post-button"><i class="fas fa-video"></i> بث مباشر</button>
+                    <button class="post-button"><i class="fas fa-photo-video"></i> إضافة ملف</button>
+                    <button class="post-button primary"><i class="fas fa-paper-plane"></i> نشر</button>
+                </div>
+            </div>
+
+            <!-- البوستات -->
+            <div id="postsContainer"></div>
+        </div>
+
+        <!-- القائمة الجانبية المحسّنة -->
+        <div class="sidebar">
+            <!-- إضافة عناصر جانبية -->
+        </div>
+    </main>
+
+    <script>
+        class PostManager {
+            constructor() {
+                this.posts = [];
+                this.loadPosts();
+            }
+
+            async loadPosts() {
+                // محاكاة جلب البيانات من API
+                this.posts = await this.mockApiCall();
+                this.renderPosts();
+            }
+
+            async mockApiCall() {
+                return [
+                    {
+                        id: 1,
+                        user: { name: "محمد أحمد", avatar: "https://via.placeholder.com/50" },
+                        content: "مرحبًا بالجميع في Mohtar Tube! 🎥",
+                        likes: 15,
+                        comments: [],
+                        timestamp: new Date().toISOString()
+                    }
+                ];
+            }
+
+            renderPosts() {
+                const container = document.getElementById('postsContainer');
+                container.innerHTML = this.posts.map(post => `
+                    <div class="post" data-post-id="${post.id}">
+                        <div class="post-header">
+                            <img src="${post.user.avatar}" class="post-user-img" alt="${post.user.name}">
+                            <div>
+                                <h4>${post.user.name}</h4>
+                                <small>${new Date(post.timestamp).toLocaleString()}</small>
+                            </div>
+                        </div>
+                        <p>${this.sanitizeInput(post.content)}</p>
+                        <div class="post-actions">
+                            <div class="post-action" onclick="toggleLike(${post.id})">
+                                <i class="far fa-thumbs-up"></i>
+                                <span>${post.likes}</span>
+                            </div>
+                            <div class="post-action" onclick="focusComment(${post.id})">
+                                <i class="far fa-comment"></i>
+                                <span>${post.comments.length}</span>
+                            </div>
+                            <div class="post-action" onclick="sharePost(${post.id})">
+                                <i class="fas fa-share"></i>
+                                مشاركة
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            sanitizeInput(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // تهيئة المدير
+        const postManager = new PostManager();
+
+        // وظائف التفاعل
+        function toggleLike(postId) {
+            const post = document.querySelector(`[data-post-id="${postId}"]`);
+            const likeBtn = post.querySelector('.fa-thumbs-up');
+            likeBtn.classList.toggle('fas');
+            post.querySelector('.post-action').classList.toggle('liked');
+        }
+
+        function focusComment(postId) {
+            const post = document.querySelector(`[data-post-id="${postId}"]`);
+            const commentInput = post.querySelector('.comment-input');
+            commentInput?.focus();
+        }
+
+        function sharePost(postId) {
+            navigator.clipboard.writeText(`${window.location.href}?post=${postId}`);
+            alert('تم نسخ رابط المنشور!');
+        }
+
+        // تحميل الخط العربي
+        const fontLink = document.createElement('link');
+        fontLink.href = 'https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap';
+        fontLink.rel = 'stylesheet';
+        document.head.appendChild(fontLink);
+    </script>
+</body>
+</html>
