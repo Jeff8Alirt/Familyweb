@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محادثة العائلة</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1877f2;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #1877f2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #165dbb;
+        }
+
+        .chat-box {
+            display: none;
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+
+        .messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+        }
+
+        .message {
+            background: #e1e1e1;
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+            max-width: 70%;
+        }
+
+        .message.self {
+            background: #1877f2;
+            color: white;
+            float: right;
+        }
+
+        .message-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .message-input button {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- شاشة إدخال الاسم -->
+        <div id="nameScreen">
+            <h1>مرحبًا بك في محادثة العائلة 👨‍👩‍👧‍👦</h1>
+            <input type="text" id="username" placeholder="أدخل اسمك">
+            <button onclick="joinChat()">انضم إلى المحادثة</button>
+        </div>
+
+        <!-- شاشة المحادثة -->
+        <div id="chatScreen" class="chat-box">
+            <h2 id="welcomeMessage"></h2>
+            <div class="messages" id="messages"></div>
+            <div class="message-input">
+                <input type="text" id="messageInput" placeholder="اكتب رسالتك...">
+                <button onclick="sendMessage()">إرسال</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // متغيرات
+        let username = '';
+        const messages = [];
+
+        // انضمام إلى المحادثة
+        function joinChat() {
+            const nameInput = document.getElementById('username');
+            username = nameInput.value.trim();
+
+            if (username) {
+                // إخفاء شاشة الاسم وإظهار شاشة المحادثة
+                document.getElementById('nameScreen').style.display = 'none';
+                document.getElementById('chatScreen').style.display = 'block';
+                document.getElementById('welcomeMessage').textContent = `مرحبًا ${username}! 👋`;
+            } else {
+                alert('الرجاء إدخال اسمك!');
+            }
+        }
+
+        // إرسال رسالة
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const messageText = messageInput.value.trim();
+
+            if (messageText) {
+                // إضافة الرسالة إلى القائمة
+                messages.push({ sender: username, text: messageText });
+
+                // عرض الرسائل
+                displayMessages();
+
+                // مسح حقل الإدخال
+                messageInput.value = '';
+            }
+        }
+
+        // عرض الرسائل
+        function displayMessages() {
+            const messagesContainer = document.getElementById('messages');
+            messagesContainer.innerHTML = '';
+
+            messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.sender === username ? 'self' : ''}`;
+                messageDiv.textContent = `${msg.sender}: ${msg.text}`;
+                messagesContainer.appendChild(messageDiv);
+            });
+
+            // التمرير إلى الأسفل
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
